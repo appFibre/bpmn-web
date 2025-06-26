@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn2:process id="Process_1" isExecutable="false">
+    <bpmn2:startEvent id="StartEvent_1">
+      <bpmn2:outgoing>Flow_016sjfd</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:endEvent id="Event_08yqijg">
+      <bpmn2:incoming>Flow_155o7h3</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="Flow_016sjfd" sourceRef="StartEvent_1" targetRef="Event_1g57trx" />
+    <bpmn2:sequenceFlow id="Flow_1sm2v4w" sourceRef="Event_1g57trx" targetRef="Gateway_0c3iety" />
+    <bpmn2:intermediateCatchEvent id="Event_1g57trx" name="Receive msg">
+      <bpmn2:incoming>Flow_016sjfd</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_1sm2v4w</bpmn2:outgoing>
+      <bpmn2:messageEventDefinition id="MessageEventDefinition_1chc7oz" messageRef="Message_0pd663c" />
+    </bpmn2:intermediateCatchEvent>
+    <bpmn2:exclusiveGateway id="Gateway_0c3iety">
+      <bpmn2:incoming>Flow_1sm2v4w</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_155o7h3</bpmn2:outgoing>
+      <bpmn2:outgoing>Flow_0ttwhbz</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="Flow_155o7h3" sourceRef="Gateway_0c3iety" targetRef="Event_08yqijg">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="JavaScript">$(item.data.message == 'Approved')</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:endEvent id="Event_0jdfg2b">
+      <bpmn2:incoming>Flow_0ttwhbz</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="Flow_0ttwhbz" sourceRef="Gateway_0c3iety" targetRef="Event_0jdfg2b">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" language="JavaScript">$(item.data.message == 'Rejected')</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+  </bpmn2:process>
+  <bpmn2:message id="Message_1twqv5h" name="sendNotification" />
+  <bpmn2:message id="Message_137uhju" name="sendNotification" />
+  <bpmn2:message id="Message_0pd663c" name="Notification" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
+      <bpmndi:BPMNEdge id="Flow_0ttwhbz_di" bpmnElement="Flow_0ttwhbz">
+        <di:waypoint x="540" y="215" />
+        <di:waypoint x="540" y="282" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_155o7h3_di" bpmnElement="Flow_155o7h3">
+        <di:waypoint x="565" y="190" />
+        <di:waypoint x="652" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1sm2v4w_di" bpmnElement="Flow_1sm2v4w">
+        <di:waypoint x="448" y="190" />
+        <di:waypoint x="515" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_016sjfd_di" bpmnElement="Flow_016sjfd">
+        <di:waypoint x="288" y="190" />
+        <di:waypoint x="412" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="252" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_08yqijg_di" bpmnElement="Event_08yqijg">
+        <dc:Bounds x="652" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1yds0p2_di" bpmnElement="Event_1g57trx">
+        <dc:Bounds x="412" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="400" y="215" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0c3iety_di" bpmnElement="Gateway_0c3iety" isMarkerVisible="true">
+        <dc:Bounds x="515" y="165" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0jdfg2b_di" bpmnElement="Event_0jdfg2b">
+        <dc:Bounds x="522" y="282" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

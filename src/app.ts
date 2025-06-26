@@ -50,7 +50,6 @@ export class WebApp {
 			console.log("bpmn-server WebApp.ts version "+ _version);
 		}
 	
-
 		this.initExpress();
 
 		this.userManager = new UserManager(this.app);

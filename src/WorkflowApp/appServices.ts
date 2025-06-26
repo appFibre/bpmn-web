@@ -2,6 +2,7 @@ import * as readline from 'readline';
 import { log } from '../test/helpers/BPMNTester';
 import axios from 'axios';
 import { ApprovalManager } from './ApprovalManager';
+import { DefaultAppDelegate } from './';
 
 const cl = readline.createInterface(process.stdin, process.stdout);
 const question = function (q) {
@@ -24,7 +25,7 @@ async function delay(time, result) {
 // var seq = 0;
 class AppServices {
     appDelegate;
-    constructor(delegate) {
+    constructor(delegate: DefaultAppDelegate) {
         this.appDelegate = delegate;
     }
     async echo(input, context) {
@@ -138,9 +139,47 @@ class AppServices {
         console.log('appServcie.DummyService1 starting');
         context.item.data.service1Result = 'Service1Exec';
     }
-
+    
     async raiseBPMNError(input, context) {
         return({bpmnError:' Something went wrong'});
     }
+
+    
+ /**
+   * Send a task message
+   * @param context
+   */
+
+  async sendTaskMessage(context) {
+    try {
+              //throw new Error('This is a simulated error for testing purposes.');
+      console.log('sendTaskMessage called with context:', context);
+      const taskId = context.message.get('id'); 
+      const message = context.message.get('message'); 
+      console.log(`Sending task message for task ${taskId}: ${message}`);
+      
+      //await this.server.sendMessage('taskMessage', { taskId, message });
+      console.log(`Sent task message for task ${taskId}: ${message}`);
+    } catch (error) {
+      console.error('Error sending task message:', error);
+    }
+  }
+
+  /**
+   * Receive a task message
+   * @param messageId
+   * @param data
+   */
+  async receiveTaskMessage(messageId, data) {
+    const taskId = data.taskId;
+    const message = data.message;
+    console.log(`Received task message for task ${taskId}: ${message}`);
+    // Update the task status or trigger a new action
+    const task = await this.appDelegate.server.dataStore.findItem({ id: taskId });
+    if (task) {
+      task.status = 'completed';
+      await this.appDelegate.server.dataStore.saveItem(task);
+    }
+  }
 }
 export {AppServices}
